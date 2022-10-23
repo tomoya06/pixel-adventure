@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class GameControl extends cc.Component {
   @property({ type: cc.TiledMap })
   tilemap: cc.Node = null;
 
@@ -23,8 +23,6 @@ export default class NewClass extends cc.Component {
     const tileSize = this.TileMap.getTileSize();
     const layer = this.TileMap.getLayer("ground");
     const layerSize = layer.getLayerSize();
-
-    console.log({ tileSize, layerSize });
 
     for (let i = 0; i < layerSize.width; i++) {
       for (let j = 0; j < layerSize.height; j++) {

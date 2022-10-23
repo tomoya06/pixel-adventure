@@ -1,55 +1,72 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class PlayerControl extends cc.Component {
   velocity: cc.Vec2 = cc.v2(0, 0);
+
+  keydownMap: { [key: number]: boolean } = {};
 
   speed: number = 100;
 
   anim: cc.Animation;
+  rigidBody: cc.RigidBody;
 
   protected onLoad(): void {
     cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onkeydown, this);
     cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onkeyup, this);
 
     this.anim = this.getComponent(cc.Animation);
+    this.rigidBody = this.getComponent(cc.RigidBody);
   }
 
   start() {}
 
   protected update(dt: number): void {
-    this.node.x += this.velocity.x * this.speed * dt;
-  }
-
-  onkeydown(e: KeyboardEvent) {
-    switch (e.keyCode) {
-      case cc.macro.KEY.a:
-        this.velocity.x = -1;
-        break;
-      case cc.macro.KEY.d:
-        this.velocity.x = 1;
-        break;
-      default:
-        break;
-    }
-
-    if (this.velocity.x !== 0) {
-      this.anim.play("player_run");
-
-      if (this.velocity.x > 0) {
-        this.node.scaleX = Math.abs(this.node.scaleX);
+    if (this.keydownMap[cc.macro.KEY.a] || this.keydownMap[cc.macro.KEY.d]) {
+      if (this.keydownMap[cc.macro.KEY.a]) {
+        this.node.x += this.speed * -1 * dt;
       } else {
-        this.node.scaleX = -1 * Math.abs(this.node.scaleX);
+        this.node.x += this.speed * 1 * dt;
       }
     }
   }
 
-  onkeyup() {
-    this.velocity.x = 0;
-    this.velocity.y = 0;
+  onkeydown(e: KeyboardEvent) {
+    console.log("keydown", e.keyCode);
+    this.setKeymap(e.keyCode, true);
+  }
 
-    console.log("idle animate");
-    this.anim.stop();
-    this.anim.play("player_idle");
+  onkeyup(e: KeyboardEvent) {
+    this.setKeymap(e.keyCode, false);
+  }
+
+  setKeymap(code: number, flag: boolean) {
+    const oldFlag = this.keydownMap[code];
+    this.keydownMap[code] = flag;
+
+    if (oldFlag === flag) {
+      return;
+    }
+
+    console.log("setKeymap", this.rigidBody.linearVelocity.y);
+
+    if (this.keydownMap[cc.macro.KEY.a] || this.keydownMap[cc.macro.KEY.d]) {
+      this.anim.play("player_run");
+
+      if (this.keydownMap[cc.macro.KEY.a]) {
+        this.node.scaleX = Math.abs(this.node.scaleX) * -1;
+      } else {
+        this.node.scaleX = Math.abs(this.node.scaleX) * 1;
+      }
+    } else {
+      this.rigidBody.linearVelocity.x = 0;
+      this.anim.play("player_idle");
+    }
+
+    if (this.keydownMap[cc.macro.KEY.space]) {
+      if (this.rigidBody.linearVelocity.y < 0.001) {
+        this.rigidBody.applyForceToCenter(cc.v2(0, 800), true);
+      }
+    }
   }
 }
