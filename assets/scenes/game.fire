@@ -1153,7 +1153,7 @@
     "_enabled": true,
     "_type": 2,
     "_allowSleep": true,
-    "_gravityScale": 1,
+    "_gravityScale": 1.5,
     "_linearDamping": 0,
     "_angularDamping": 0,
     "_linearVelocity": {
@@ -1184,15 +1184,15 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0.12
+      "x": -0.02,
+      "y": 0.26
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 17,
-      "height": 14.75
+      "width": 17.99,
+      "height": 15
     },
-    "_id": "82Cj79VE9AcZ1T1ubrCyV3"
+    "_id": "39m81xpYJDTqyIaCDB/G0r"
   },
   {
     "__type__": "7c510mwSnZClauBPBy+NMDx",

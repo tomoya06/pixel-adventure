@@ -59,12 +59,11 @@ export default class PlayerControl extends cc.Component {
         this.node.scaleX = Math.abs(this.node.scaleX) * 1;
       }
     } else {
-      this.rigidBody.linearVelocity.x = 0;
       this.anim.play("player_idle");
     }
 
-    if (this.keydownMap[cc.macro.KEY.space]) {
-      if (this.rigidBody.linearVelocity.y < 0.001) {
+    if (this.keydownMap[cc.macro.KEY.w]) {
+      if (Math.abs(this.rigidBody.linearVelocity.y) < 0.001) {
         this.rigidBody.applyForceToCenter(cc.v2(0, 800), true);
       }
     }
