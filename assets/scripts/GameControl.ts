@@ -12,7 +12,7 @@ export default class GameControl extends cc.Component {
   onLoad() {
     const p = cc.director.getPhysicsManager();
     p.enabled = true;
-    p.debugDrawFlags = cc.PhysicsManager.DrawBits.e_shapeBit;
+    // p.debugDrawFlags = cc.PhysicsManager.DrawBits.e_shapeBit;
 
     this.bindCollideToGround();
   }

@@ -1032,9 +1032,9 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 0.9
     },
-    "_radius": 7.5,
+    "_radius": 8,
     "_id": "10qDVqSwFIrrVvqkhVnVh+"
   },
   {
