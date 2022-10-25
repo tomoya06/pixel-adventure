@@ -1,3 +1,5 @@
+import BulletControl from "./BulletControl";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -19,6 +21,9 @@ export default class PlayerControl extends cc.Component {
   anim: cc.Animation;
   rigidBody: cc.RigidBody;
 
+  @property(cc.Prefab)
+  bulletPrefab: cc.Prefab;
+
   onLoad() {
     cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onkeydown, this);
     cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onkeyup, this);
@@ -31,7 +36,16 @@ export default class PlayerControl extends cc.Component {
     this.setDirection(1);
   }
 
-  start() {}
+  start() {
+    this.schedule(
+      () => {
+        this.shoot();
+      },
+      1,
+      undefined,
+      2
+    );
+  }
 
   update(dt: number) {
     const velocity = this.rigidBody.linearVelocity;
@@ -86,32 +100,14 @@ export default class PlayerControl extends cc.Component {
     this.node.scaleX = this.nodeScale * dir;
   }
 
-  // setKeymap(code: number, flag: boolean) {
-  //   const oldFlag = this.keydownMap[code];
-  //   this.keydownMap[code] = flag;
+  shoot() {
+    console.log(`shoot`);
+    const bullet = cc.instantiate(this.bulletPrefab);
+    bullet.setParent(this.node.parent);
 
-  //   if (oldFlag === flag) {
-  //     return;
-  //   }
-
-  //   console.log("setKeymap", code);
-
-  //   if (this.keydownMap[cc.macro.KEY.a] || this.keydownMap[cc.macro.KEY.d]) {
-  //     this.anim.play("player_run");
-
-  //     if (this.keydownMap[cc.macro.KEY.a]) {
-  //       this.node.scaleX = Math.abs(this.node.scaleX) * -1;
-  //     } else {
-  //       this.node.scaleX = Math.abs(this.node.scaleX) * 1;
-  //     }
-  //   } else {
-  //     this.anim.play("player_idle");
-  //   }
-
-  //   if (this.keydownMap[cc.macro.KEY.w]) {
-  //     // if (Math.abs(this.rigidBody.linearVelocity.y) < 0.001) {
-  //     // }
-  //     this.rigidBody.applyForceToCenter(cc.v2(0, 800), true);
-  //   }
-  // }
+    bullet.x = this.node.x + 6 * this.direction;
+    bullet.y = this.node.y - 0.4;
+    bullet.scaleX *= this.direction;
+    bullet.getComponent(BulletControl).direction = this.direction;
+  }
 }

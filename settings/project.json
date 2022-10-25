@@ -3,7 +3,8 @@
   "group-list": [
     "default",
     "player",
-    "ground"
+    "ground",
+    "bullet"
   ],
   "collision-matrix": [
     [
@@ -15,6 +16,13 @@
       true
     ],
     [
+      false,
+      true,
+      false,
+      true
+    ],
+    [
+      false,
       false,
       true,
       false
