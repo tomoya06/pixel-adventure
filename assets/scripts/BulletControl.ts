@@ -23,6 +23,6 @@ export default class BulletControl extends cc.Component {
       this.node.destroy();
     }
 
-    console.log(`bullet: ${this.node.x}`);
+    // console.log(`bullet: ${this.node.x}`);
   }
 }
