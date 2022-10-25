@@ -17,6 +17,7 @@ export default class PlayerControl extends cc.Component {
   state = "";
   direction = 1;
   nodeScale = 1;
+  recoil = 0;
 
   anim: cc.Animation;
   rigidBody: cc.RigidBody;
@@ -73,6 +74,8 @@ export default class PlayerControl extends cc.Component {
     } else {
       this.setState("player_idle");
     }
+
+    this.setRotation();
   }
 
   onkeydown(e: KeyboardEvent) {
@@ -100,6 +103,17 @@ export default class PlayerControl extends cc.Component {
     this.node.scaleX = this.nodeScale * dir;
   }
 
+  setRotation() {
+    if (!this.recoil) {
+      return;
+    }
+    this.node.angle = this.recoil;
+    this.recoil /= 2;
+    if (Math.abs(this.recoil) < 1) {
+      this.recoil = 0;
+    }
+  }
+
   shoot() {
     console.log(`shoot`);
     const bullet = cc.instantiate(this.bulletPrefab);
@@ -109,5 +123,7 @@ export default class PlayerControl extends cc.Component {
     bullet.y = this.node.y - 0.4;
     bullet.scaleX *= this.direction;
     bullet.getComponent(BulletControl).direction = this.direction;
+
+    this.recoil = this.direction * 30;
   }
 }
