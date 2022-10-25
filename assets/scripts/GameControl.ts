@@ -37,7 +37,7 @@ export default class GameControl extends cc.Component {
 
         const collider = tile.node.addComponent(cc.PhysicsBoxCollider);
         collider.offset = cc.v2(tileSize.width / 2, tileSize.height / 2);
-        collider.size = cc.size(tileSize.width * 0.8, tileSize.height * 0.8);
+        collider.size = cc.size(tileSize.width, tileSize.height);
         collider.apply();
       }
     }
