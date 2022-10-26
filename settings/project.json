@@ -4,7 +4,8 @@
     "default",
     "player",
     "ground",
-    "bullet"
+    "bullet",
+    "enemy"
   ],
   "collision-matrix": [
     [
@@ -13,9 +14,19 @@
     [
       false,
       false,
+      true,
+      null,
       true
     ],
     [
+      false,
+      true,
+      false,
+      true,
+      true
+    ],
+    [
+      false,
       false,
       true,
       false,
@@ -23,9 +34,10 @@
     ],
     [
       false,
-      false,
       true,
-      false
+      true,
+      true,
+      true
     ]
   ],
   "excluded-modules": [

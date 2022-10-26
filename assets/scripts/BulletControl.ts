@@ -12,7 +12,9 @@ export default class BulletControl extends cc.Component {
 
   speed: number = 100;
 
-  onLoad() {}
+  onLoad() {
+    cc.director.getCollisionManager().enabled = true;
+  }
 
   start() {}
 

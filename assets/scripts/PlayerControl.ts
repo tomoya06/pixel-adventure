@@ -34,6 +34,8 @@ export default class PlayerControl extends cc.Component {
 
     this.nodeScale = Math.abs(this.node.scaleX);
 
+    cc.director.getCollisionManager().enabled = true;
+
     this.setDirection(1);
   }
 
@@ -115,14 +117,15 @@ export default class PlayerControl extends cc.Component {
   }
 
   shoot() {
-    console.log(`shoot`);
     const bullet = cc.instantiate(this.bulletPrefab);
-    bullet.setParent(this.node.parent);
 
     bullet.x = this.node.x + 6 * this.direction;
     bullet.y = this.node.y - 0.4;
     bullet.scaleX *= this.direction;
     bullet.getComponent(BulletControl).direction = this.direction;
+    bullet.group = "bullet";
+
+    bullet.setParent(this.node.parent);
 
     this.recoil = this.direction * 30;
   }

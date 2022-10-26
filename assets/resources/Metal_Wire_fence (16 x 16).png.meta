@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "7ad0fa1f-3c50-4454-8fb3-dc6042b13b74",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 224,
+  "height": 48,
+  "platformSettings": {},
+  "subMetas": {
+    "Metal_Wire_fence (16 x 16)": {
+      "ver": "1.0.6",
+      "uuid": "fe19686a-17f2-4abe-8bae-1dd201612c78",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "7ad0fa1f-3c50-4454-8fb3-dc6042b13b74",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -7,
+      "trimX": 6,
+      "trimY": 14,
+      "width": 212,
+      "height": 34,
+      "rawWidth": 224,
+      "rawHeight": 48,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
