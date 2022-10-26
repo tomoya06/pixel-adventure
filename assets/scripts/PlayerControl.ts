@@ -2,22 +2,30 @@ import BulletControl from "./BulletControl";
 
 const { ccclass, property } = cc._decorator;
 
-@ccclass
-export default class PlayerControl extends cc.Component {
-  keydownMap = {
+const defaultKeydownMap = () => {
+  return {
     [cc.macro.KEY.d]: 0,
     [cc.macro.KEY.a]: 0,
     [cc.macro.KEY.w]: 0,
     [cc.macro.KEY.s]: 0,
+    [cc.macro.KEY.space]: 0,
   };
+};
+
+@ccclass
+export default class PlayerControl extends cc.Component {
+  keydownMap = defaultKeydownMap();
 
   runspeed: number = 60;
   jumpspeed: number = 100;
+  recoilAmount: number = 30;
 
   state = "";
   direction = 1;
   nodeScale = 1;
   recoil = 0;
+
+  nocontrol = false;
 
   anim: cc.Animation;
   rigidBody: cc.RigidBody;
@@ -39,22 +47,17 @@ export default class PlayerControl extends cc.Component {
     this.setDirection(1);
   }
 
-  start() {
-    this.schedule(
-      () => {
-        this.shoot();
-      },
-      1,
-      undefined,
-      2
-    );
-  }
+  start() {}
 
   update(dt: number) {
+    if (this.nocontrol) {
+      return;
+    }
+
+    // 移动
     const velocity = this.rigidBody.linearVelocity;
 
     let dir = 0;
-
     if (this.keydownMap[cc.macro.KEY.d]) {
       dir = 1;
     } else if (this.keydownMap[cc.macro.KEY.a]) {
@@ -62,10 +65,9 @@ export default class PlayerControl extends cc.Component {
     }
     velocity.x = dir * this.runspeed;
 
-    if (this.keydownMap[cc.macro.KEY.w] === 1) {
+    this.consumeKeydown(cc.macro.KEY.w, () => {
       velocity.y = this.jumpspeed;
-      this.keydownMap[cc.macro.KEY.w] += 1;
-    }
+    });
 
     this.rigidBody.linearVelocity = cc.v2(velocity.x, velocity.y);
     if (dir) {
@@ -78,14 +80,29 @@ export default class PlayerControl extends cc.Component {
     }
 
     this.setRotation();
+
+    // 射击
+    this.consumeKeydown(cc.macro.KEY.space, () => {
+      this.shoot();
+    });
   }
 
   onkeydown(e: KeyboardEvent) {
+    if (this.nocontrol) {
+      return;
+    }
     this.keydownMap[e.keyCode] += 1;
   }
 
   onkeyup(e: KeyboardEvent) {
     this.keydownMap[e.keyCode] = 0;
+  }
+
+  consumeKeydown(code: number, handler: () => void) {
+    if (this.keydownMap[code] === 1) {
+      handler();
+      this.keydownMap[code] += 1;
+    }
   }
 
   setState(state: string) {
@@ -126,6 +143,42 @@ export default class PlayerControl extends cc.Component {
 
     bullet.setParent(this.node.parent);
 
-    this.recoil = this.direction * 30;
+    this.recoil = this.direction * this.recoilAmount;
+  }
+
+  stopControl() {
+    this.nocontrol = true;
+    this.keydownMap = defaultKeydownMap();
+  }
+
+  getHurt() {
+    this.stopControl();
+    this.rigidBody.linearVelocity = cc.v2(0, 0);
+    const curPos = this.node.getPosition();
+    const that = this;
+    const duration = 1;
+    const wakeupDelay = 0.8;
+
+    this.node.runAction(
+      cc.sequence(
+        cc.callFunc(() => {
+          that.anim.play("player_hurt");
+          that.node.angle = this.direction * this.recoilAmount * 0.8;
+        }),
+        cc.spawn(
+          cc
+            .moveTo(duration, curPos.x - this.direction * 30, curPos.y)
+            .easing(cc.easeQuarticActionOut()),
+          cc.sequence(
+            cc.delayTime(wakeupDelay),
+            cc.rotateTo(duration - wakeupDelay, 0)
+          )
+        ),
+        cc.callFunc(() => {
+          that.nocontrol = false;
+          that.anim.play("player_idle");
+        })
+      )
+    );
   }
 }

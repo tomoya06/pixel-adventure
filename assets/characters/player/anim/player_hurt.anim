@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "hurt",
+  "_name": "player_hurt",
   "_objFlags": 0,
   "_native": "",
   "_duration": 1,
@@ -14,7 +14,7 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "faee37f7-aa75-4fc1-bd7c-c318ee74eea5"
+              "__uuid__": "7a53484a-67ea-4a47-adc4-1b9443ddfb3e"
             }
           }
         ]

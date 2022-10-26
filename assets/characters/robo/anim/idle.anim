@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "hurt",
+  "_name": "idle",
   "_objFlags": 0,
   "_native": "",
   "_duration": 1,
@@ -14,7 +14,7 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "faee37f7-aa75-4fc1-bd7c-c318ee74eea5"
+              "__uuid__": "2df3324a-3498-4930-b8df-6d6221c4a297"
             }
           }
         ]
