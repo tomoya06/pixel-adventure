@@ -1,7 +1,15 @@
+import {
+  ColliderComponent,
+  ColliderContactHandler,
+} from "../interfaces/colliders";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class BulletControl extends cc.Component {
+export default class BulletControl
+  extends cc.Component
+  implements ColliderComponent
+{
   private _direction: number = 1;
   public get direction(): number {
     return this._direction;
@@ -27,4 +35,11 @@ export default class BulletControl extends cc.Component {
 
     // console.log(`bullet: ${this.node.x}`);
   }
+
+  onBeginContact: ColliderContactHandler = (contact, selfColli, otherCollo) => {
+    this.node.destroy();
+  };
+  onEndContact: ColliderContactHandler;
+  onPreSolve: ColliderContactHandler;
+  onPostSolve: ColliderContactHandler;
 }

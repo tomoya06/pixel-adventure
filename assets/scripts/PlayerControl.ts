@@ -123,7 +123,6 @@ export default class PlayerControl extends cc.Component {
     bullet.y = this.node.y - 0.4;
     bullet.scaleX *= this.direction;
     bullet.getComponent(BulletControl).direction = this.direction;
-    bullet.group = "bullet";
 
     bullet.setParent(this.node.parent);
 
